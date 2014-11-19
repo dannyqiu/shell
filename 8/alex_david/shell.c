@@ -22,7 +22,7 @@ int command(){
       n++;
     }
     p++;
-  }
+  }//remove newline
   char **params = (char *)malloc(64 * n);
   n = 0;
   while (s){
