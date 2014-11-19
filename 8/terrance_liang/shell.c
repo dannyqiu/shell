@@ -3,7 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 void command(char* comm){
   int argcount = 0;
   int i = 0;
@@ -28,7 +27,7 @@ void command(char* comm){
   free(arguments);
 }
 
-int main(){
+void shell(){
   printf("Testing if this works ");
   char uinput[256];
   fgets(uinput,sizeof(uinput),stdin);
@@ -39,7 +38,18 @@ int main(){
     exit(0);
   }
   else{
-    command(uinput);
+    int childcom = fork();
+    if (childcom==0){
+      command(uinput);
+      exit(0);
+    }
+    sleep(1);
+    shell();
+    exit(0);
   }
+}
+
+int main(){
+  shell();
   return 0;
 }
