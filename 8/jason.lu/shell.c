@@ -4,6 +4,7 @@
 
 int main(){
   while(1){
+    
     char prompt[4096];
     strcpy(prompt,"Shell:");//add directory and username
     printf("%s", prompt);
