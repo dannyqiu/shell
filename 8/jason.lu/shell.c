@@ -42,14 +42,17 @@ int main(){
       int f = fork();
       if(!f){
 	execvp(args[0],args);
+	printf("Command not found\n");
       }
     }
+    /*
     i = 0;
     
     while(args[i]){
       printf("%s\n",args[i]);
       i++;
     }
+    */
   }
   
 }
