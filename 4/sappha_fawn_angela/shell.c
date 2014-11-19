@@ -30,7 +30,8 @@ void execute(){
     args[i-1] = sep;
   }
   args[i] = 0;
-  if (args[0] != "cd") {
+  if (strcmp(args[0], "cd") != 0) {
+    //printf("%s", args[0]);
     int f = fork();
     int status;
     if (f == 0)
@@ -39,11 +40,13 @@ void execute(){
       wait(&status);
     }
   }
-  else if (args[0] == "exit") {
+  else if (strcmp(args[0], "exit") == 0) {
+    printf("%s", args[0]);
     o = 0;
     exit(0);
   }
-  else
+  else{
     execvp(args[0], args);
+  }
   free(args);
 }
