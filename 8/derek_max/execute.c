@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "execute.h"
+#include <errno.h>
 //#include "strsep.h"
 
 /* char* parseStr(char* str, char* match){ */
@@ -42,12 +43,28 @@ int execute(char* input){
     args[i] = prev;
     i++;
   }
-  execvp(args[0], args);
-  exit(EXIT_FAILURE);
+
+  pid_t f = fork();
+  int status;
+  int w;
+  if (f > 0){ //parent
+    w = wait(&status);
+    exit(0);
+  }
+  else if (f<0){
+    exit(EXIT_FAILURE);
+  }
+  else{
+      execvp(args[0], args);
+      printf("%s\n", strerror(errno));
+      exit(EXIT_FAILURE); //only runs if execvp fails
+  }
+
+
 
 }
 
 int main(){
-  execute("ls -al");
+  execute("asdfasdfasdjfasdfasdfsd");
 }
 
