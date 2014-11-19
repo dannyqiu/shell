@@ -1,6 +1,14 @@
 #include "shell.h"
 
+
+static void sighandler(int signo){
+  if (signo == SIGINT){
+    exit(0);
+  }
+}
+
 int main() {
+  signal(SIGINT, sighandler);
   while(1) {
     printprompt();
     execute();
@@ -9,10 +17,11 @@ int main() {
 }
 
 void printprompt() {
-  char * wd[256];
+  char* wd[256];
   //getcwd(wd, sizeof(wd));
   printf("owl:%s$ ", wd);
 }
+
 //I don't think this works for | calls...
 //so we can use this specifically if there is no | aka not calling two different things in one line
 void execute(){
