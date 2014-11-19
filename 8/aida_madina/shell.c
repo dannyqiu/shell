@@ -4,44 +4,49 @@
 #include <string.h>
 
 int main() {
+  
+char command[200];
+char *args = command;
+char *args_array[10];
+int num_args = 0;
+int pid;
+  
+ while(1) {
+   printf("\nseashell$ ");
+   fgets(command, sizeof(command), stdin);
+   command[strlen(command)-1]='\0';
 
-  char command[200];
-  char *args = command;
-  char *args_array[10];
-  int num_args = 0;
+   if (!strchr(command, ' ')){
+     printf("You want to: %s\n", command);
+     pid = fork();
+     execlp(command, command, NULL);
+   }
 
-  printf("What would you like to do? ");
-  fgets(command, sizeof(command), stdin);
-  command[strlen(command)-1]='\0';
+   else {
+     char *p = command;
 
-  if (!strchr(command, ' ')){
-    printf("You want to: %s\n", command);
-    execlp(command, command, NULL);
-  }
+     while (*p){
+       if (*p == ' '){
+	 num_args++;
+       }
+       p++;
+     }
 
-  else {
-    char *p = command;
+     char *comm = strtok(args, " ");
+     int i = 1;
 
-    while (*p){
-      if (*p == ' '){
-	num_args++;
-      }
-      p++;
-    }
+     args_array[0]=comm;
 
-    char *comm = strtok(args, " ");
-    int i = 1;
+     while (i <= num_args) {
+       args_array[i] = strtok(NULL, " ");
+       i++;
+     }
+     args_array[i]=NULL;
 
-    args_array[0]=comm;
-
-    while (i <= num_args) {
-      args_array[i] = strtok(NULL, " ");
-      i++;
-    }
-    args_array[i]=NULL;
-    execvp(args_array[0], args_array);
-  }
-
-  return 0;
+     pid = fork();
+     execvp(args_array[0], args_array);
+   }
+ }
+ return 0;
 }
 
