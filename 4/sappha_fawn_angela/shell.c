@@ -1,9 +1,9 @@
 #include "shell.h"
 
-int o = 1;
+
 
 int main() {
-  while(o) {
+  while(1) {
     printprompt();
     execute();
   }
@@ -32,8 +32,7 @@ void execute(){
   args[i] = 0;
   //printf("args[0]:%s\n", args[0]);
   if (strcmp(args[0], "exit") == 0) {
-    printf("%s", args[0]);
-    o = 0;
+    //printf("%s", args[0]);
     exit(0);
   }
   else if (strcmp(args[0], "cd") != 0) {
