@@ -16,13 +16,14 @@ char *strip (char *p){
 }
 void cdcommand(){
   //printf("cd does not work right now\n");
+  
 }
 void exec(){
   char *s= (char *)(malloc(10*sizeof(char)));
   char *command = (char *)(malloc(10*sizeof(char)));
   char *token = (char *)(malloc(10*sizeof(char)));
   int alen = 1; //+1 for NULL
-  printf("What would you like to do?  ");
+  printf("$ ");
   fgets(s,100,stdin);
   s = strip(s);
   command = s;
@@ -56,7 +57,7 @@ void exec(){
     exit(-1);
   }
   else if (strcmp(argarray[0],"cd")==0){
-    cdcommand();
+    chdir(argarray[1]);//~ and cd without an arg will not work     
   }
   else{
     int f = fork();
