@@ -3,20 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 
-<<<<<<< HEAD
 int execute(char s[256]) {
 
-=======
-int execute() {
-  char s[256];
-  printf("JAVO:> ");
-  fgets(s, sizeof(s), stdin);
-  int i = 0;
-  while(s[i] != '\n') {
-    i++;
-  }
-  s[i] = 0;
->>>>>>> 3297b7ba4fbb5ba18ffa417a2915eeac1601a943
   char *s1 = s;
   char *s2;
   char *arg[256];
@@ -29,6 +17,15 @@ int execute() {
   }
   arg[i+1] = 0;
   
-  execvp(arg[0], arg);
+  if(!strcmp(arg[0],"cd")){
+    if (sizeof(arg) / sizeof(char *) > 1)
+      chdir(arg[1]);
+    else
+      chdir(getenv("HOME"));
+  }
+  else{
+    execvp(arg[0], arg);
+  }
+  
   return 0;
 }
