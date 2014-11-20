@@ -7,7 +7,9 @@
 #include <signal.h>
 #include <sys/types.h>
 
-void change_directory(char*);
-void exit_shell();
+#define BUFFER_SIZE 1024
+
 void shell();
-void call_cmd(char*,char*);
+int parse_input(char *);
+void call_cmd(char *, char *);
+void change_directory(char*);
