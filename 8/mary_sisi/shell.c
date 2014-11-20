@@ -7,6 +7,13 @@
 #include <string.h>
 
 
+/*Ok, so the parse is sort of working. If you test it out, you can see that
+at the end of the pasre function i print it out and each element is correct
+but then when i try to print it in main it doesn't work
+So when the value is being returned is where it gets messed up somehow
+ 
+*/
+
 //parse
 char** parse(){
  
@@ -62,14 +69,14 @@ int main(){
 
   while(1){
 
-    char ** a =  (char**)malloc(sizeof(char *) * 50);
-    a = parse();
+    //   char ** a =  (char**)malloc(sizeof(char *) * 50);
+    char ** a = parse();
     
-    /* int i=0;
+    int i=0;
     while(a[i]){
       printf("command:  %s\t",a[i]);
       i++;
-      }*/
+    }
 
       /*
     if (a[0] == "exit"){
