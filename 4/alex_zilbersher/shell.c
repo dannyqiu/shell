@@ -9,14 +9,35 @@ int run(){
   char *s1=s;
   char *s2;
   int i=0;
+  int semi=0; //for ; in commands
   while(s2=strsep(&s1," ")){
     if(strcmp(s2,"")!=0){
-      //printf("s2:%s.\n",s2);
-      args[i]=s2;
-      i++;
+      if(strcmp(s2,";")!=0){
+	//printf("s2:%s.\n",s2);
+	args[i]=s2;
+	i++;
+      }else{
+	semi=1;
+	break;
+      }
     }
   }
   args[i]=0;
-  execvp(args[0],args);
+  //printf("%d\n",semi);
+  if(semi){
+    int f=fork();
+    if(f){
+      wait(&f);
+      execvp(args[0],args);
+    }else{
+      //run_command();
+    }
+  }else{
+    execvp(args[0],args);
+  }
+  return 0;
+}
+
+int run_command(char* s){
   return 0;
 }

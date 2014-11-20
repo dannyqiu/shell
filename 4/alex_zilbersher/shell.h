@@ -6,3 +6,4 @@
 #include <string.h>
 
 int run();
+int run_command(char* s);
