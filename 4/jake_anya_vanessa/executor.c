@@ -5,7 +5,7 @@
 
 int execute() {
   char s[256];
-  printf("What would you like to do? ");
+  printf("JAVO:> ");
   fgets(s, sizeof(s), stdin);
   int i = 0;
   while(s[i] != '\n') {
