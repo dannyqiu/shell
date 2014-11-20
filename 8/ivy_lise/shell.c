@@ -15,16 +15,15 @@ char *strip (char *p){
   return p;
 }
 
-void exec(char ** argarray){
+void exec(char ** argarray, int len){
   //cmd commands
   if (strcmp(argarray[0],"exit")==0){
     printf("exit\n");
     exit(-1);
   }
   else if (strcmp(argarray[0],"cd")==0){
-    //TODO: parse ~ and fix segfault for empty cd
-    if(strcmp(argarray[1],"~")==0){
-      //printf("%s\n",argarray[1]);
+    //TODO: parse ~/blah
+    if(len < 3 || strcmp(argarray[1],"~")==0){
       chdir(getenv("HOME"));
     }
     chdir(argarray[1]);
@@ -85,7 +84,7 @@ void shell(){
 
   argarray[i] = NULL;
   
-  exec(argarray);
+  exec(argarray, alen);
 }
 
 
