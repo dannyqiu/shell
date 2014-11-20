@@ -7,6 +7,7 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <pwd.h>
+#include <sys/wait.h>
 
 #define BUFFER_SIZE 1024
 
