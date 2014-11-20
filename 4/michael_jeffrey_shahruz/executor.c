@@ -2,45 +2,61 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
 
-int main(){
-  printf("$: ");
-  char s[256];
-  fgets( s, 256, stdin );
+// Execs a function, parsing the input and running execvp
+int exec_line(char *input);
 
-  char* pars = s;
-  char* cmd = strsep( &pars, " ");
-  // printf("cmd: %s\npars: %s", cmd, pars);
 
-  char path[200];
-  strcpy(path, "/bin/");
-  strcat(path, cmd);
-  char* temp = pars;
-  strsep( &temp, "\n");
+int main() {
+  int status;
+  char s[1024];
+  while(1) {
+    printf("^_^: ");
+    fgets(s,sizeof(s),stdin);
+    int f = fork();
 
-  //printf("path: %s\n", path);
-  //printf("pars: %s\n", pars);
+    char scpy;
+    strcpy(&scpy,s);
+    char *first_arg;
+    first_arg = strsep(&scpy," ");
+    
+    if(strcmp("exit",first_arg) == 0) {
+      printf("exiting\n");
+      exit(0);
+    } else if (strcmp("cd",first_arg) == 0) {
+      printf("cding\n");
+    } else {
 
-  char** args = NULL;
-  int k = 1;
-  args = (char**)malloc(sizeof(char *));
-  args[0] = cmd;
-  while( pars ){
-    args = realloc(args, sizeof(char *) * (k+1) );
-    args[k] = strsep( &pars, " ");
-    //    printf("args[%d]: %s\n", k, args[k]);
-    k++;
+   if(f == 0) {
+      exec_line(s);
+    }
+    else {
+      wait(&status);
+    }
+    
   }
-  args[k] = NULL;
+}
+}
 
-  char* test[4];
-  test[0] = "ls";
-  test[1] = "-a";
-  test[2] = "-l";
-  test[3] = NULL;
-
-  free(args);
+int exec_line(char *s) {
+ 
   
-  execvp(path, args);
+  char* s2;
+  char *array[256];
+  
+  int i=0;
+  for(;s[i]!='\n';i++){
+  }
+  s[i]=0;
+  
+  char* s1=s;
+  
+  for(i=0;s1;i++){
+    s2 = strsep(&s1," ");
+    array[i]=s2;
+  }
+  array[i]=0;
+  execvp(array[0],array);
   return 0;
 }
