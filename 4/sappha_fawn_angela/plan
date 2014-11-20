@@ -13,7 +13,7 @@ parse on semicolon (while)
    and redirect? how do this
    ---
    ---
-   omg pipes
+   omg pipes ;A;
    semicolon takes precedence over pipes so this should be okay? idk man  
    ---     
 return?
