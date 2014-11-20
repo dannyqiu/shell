@@ -3,10 +3,25 @@
 void shell() {
     char *input = (char *) malloc(BUFFER_SIZE);
     int done = 0;
+    //Getting the Home Directory
+    uid_t user = getuid();
+    struct passwd * pwd;
+    pwd = getpwuid(user);
+    char* home = pwd->pw_dir;
     while (!done) {
-        printf(">> ");
-        fflush(stdout);
-        done = parse_input(input);
+      char buf[BUFFER_SIZE];
+      getcwd(buf,BUFFER_SIZE);
+      char *tmp = strdup(buf);
+      char* path = strstr(tmp,home);
+      if(path == NULL){
+	printf("STD:%s$ ", buf);
+      }
+      else{
+	memmove(path,path+strlen(home),1+strlen(path+strlen(home))); //Removes the home directory
+	printf("STD:~%s$ ", path);
+      }
+      fflush(stdout);
+      done = parse_input(input);
     }
     free(input);
 }
