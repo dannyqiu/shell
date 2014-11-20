@@ -43,12 +43,7 @@ int parse_input(char *input) {
     }
     else if (cmd) {
         if (strstr(cmd, "cd") != NULL) {
-          if(strstr(cmd, "~") != NULL){
-	    change_directory(argv); //shouldn't this be cmd? argv would have the new line
-	  }
-	  else{//Where you fix the ~, To be implemented
-	    change_directory(argv);
-	  }
+            change_directory(argv);
         }
         else if (strcmp(cmd, "")) { // Makes sure that the command is not empty
             printf("Running: %s %s\n", cmd, argv);
@@ -84,6 +79,10 @@ void call_cmd(char *cmd, char *argv) {
 
 void change_directory(char *argv) {
     char *path = strsep(&argv, " \n");
+    if (strstr(path, "~") != NULL){
+    //Where you fix the ~, To be implemented
+        printf("GOTTA FIX THIS ~!\n");
+    }
     errno_result = chdir(path);
     if (errno_result == -1) {
         printf("%s: %s\n", "cd", strerror(errno));
