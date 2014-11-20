@@ -33,6 +33,12 @@ int command(){
 	n++;
   }
   params[n] = NULL;
+  if (! strcmp(params[0],"cd")){
+    
+  }
+  if (! strcmp(params[0],"exit")){
+    execlp("kill","-9",getpid(),NULL);
+  }
   execvp(params[0],params);
-  return 0;
+  
 }
