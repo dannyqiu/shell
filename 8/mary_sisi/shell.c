@@ -10,28 +10,34 @@
 //parse
 char** parse(){
  
-  char s[256];
-  char * ps = s;
-  fgets(s, sizeof(s), stdin);
-  s[strlen(s)-1]='\0';
+  char s1[256];
 
-  char ** args = (char**)malloc(sizeof(s));
+  fgets(s1, sizeof(s1), stdin);
+  s1[strlen(s1)-1]='/0';
 
-  args[0] = strsep(&ps," ");
+  char * s = s1;
+  char ** args = (char**)malloc(sizeof(char *) * 50);
+  char * temp = strsep(&s, " ");
+  //args[0] = temp;
 
-  int i=1;
+  int i=0;
+  while(temp){
+    printf("?????????%s\n", temp);//     
+    args[i] = temp;    
+    temp = strsep(&s, " ");
+    
+    i ++;   
+  }
 
-  while(ps){
-    args[i] = ps;
-    strsep(&ps," ");
+  printf("%d   working???\n", i);  
+  args[i] = 0;
+  
+  i=0;
+  while(args[i]){
+    printf("args[%d]:  %s\t",i,args[i]);
     i++;
   }
- 
-  /*  i=0;
-  while(args[i]){
-    printf("command:  %s\t",args[i]);
-    i++;
-    }*/
+
 
   return args;
 
@@ -56,17 +62,16 @@ int main(){
 
   while(1){
 
-    char ** a = parse();
-    //printf("%s\t",a[0]);
-
-    int i=0;
-
+    char ** a =  (char**)malloc(sizeof(char *) * 50);
+    a = parse();
+    
+    /* int i=0;
     while(a[i]){
       printf("command:  %s\t",a[i]);
       i++;
-    }
+      }*/
 
-    /*
+      /*
     if (a[0] == "exit"){
       execlp("exit","exit", NULL);
     }
@@ -74,13 +79,15 @@ int main(){
       execvp("cd", a );
       }*/
     //else{
+
+    /*
       int f = fork();
       if( !f ){
 	execvp(a[0], a );
 	//everything else
 	//redirection
             
-    }
+	}*/
 
   }
   
