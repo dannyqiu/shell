@@ -22,9 +22,12 @@ void exec(char ** argarray, int len){
     exit(-1);
   }
   else if (strcmp(argarray[0],"cd")==0){
-    //TODO: parse ~/blah
     if(len < 3 || strcmp(argarray[1],"~")==0){
       chdir(getenv("HOME"));
+    } else if(strncmp(argarray[1],"~/",2)==0){
+      char * path = strdup(argarray[1]+2);
+      chdir(getenv("HOME"));
+      chdir(path);
     }
     chdir(argarray[1]);
   }
