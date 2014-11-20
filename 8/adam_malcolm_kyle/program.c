@@ -9,6 +9,7 @@ void process(char * start){
   }
 }
 
+
 void execute(char * start){
   //execute: Takes a char pointer start representing the beginning f a String
   //Splits the string arguements and runs them with a child process and execvp
@@ -17,24 +18,35 @@ void execute(char * start){
   char * args[10];
   int x = 0;
   char * y;
+  int redir = 0;
   while (start){
     y = strsep(&start, " ");
-    args[x] = y;
-    x++;
+    if(*y != 0){
+      if (! strcmp(">",y))
+	redir = 1;
+    
+      args[x] = y;
+      x++;
+    }
+    
   }
-  args[x -1] = strsep(&args[x-1], "\n");
-  args[x]=0;
-  if (! (strcmp("cd",args[0]) && strcmp("exit",args[0])))
-    normal_process(args);
+  if (redir)
+    redirect(args);
   else{
-    child_process(args);
+    args[x -1] = strsep(&args[x-1], "\n");
+    args[x]=0;
+    if (! (strcmp("cd",args[0]) && strcmp("exit",args[0])))
+      normal_process(args);
+    else{
+      child_process(args);
+    }
   }
 }
 void normal_process(char * args[]){
   //For processes that require the main process to run
   //Takes the process with args as an array
   if (! (strcmp("cd",args[0]))){
-    printf("IMPLEMENT CD PLS\n");
+    chdir(args[1]);
   }
   else if (! (strcmp("exit",args[0])))
     exit(0);
@@ -52,6 +64,9 @@ void child_process(char * args[]){
   else{
     wait(&f);
   }
+}
+void redireCt(char * args[]){
+  printf("IMPLEMENT ME PLS");
 }
 
 int main(int argc, char *argv[]){

@@ -14,17 +14,50 @@ char *strip (char *p){
     p[strlen(p)-1] = '\0';
   return p;
 }
-void cdcommand(){
-  //printf("cd does not work right now\n");
-  
+
+void exec(char ** argarray, int len){
+  //cmd commands
+  if (strcmp(argarray[0],"exit")==0){
+    printf("exit\n");
+    exit(-1);
+  }
+  else if (strcmp(argarray[0],"cd")==0){
+    if(len < 3 || strcmp(argarray[1],"~")==0){
+      chdir(getenv("HOME"));
+    } else if(strncmp(argarray[1],"~/",2)==0){
+      char * path = strdup(argarray[1]+2);
+      chdir(getenv("HOME"));
+      chdir(path);
+    }
+    chdir(argarray[1]);
+  }
+  else{
+    int f = fork();
+    if (f < 0){
+      printf("WEIRD ERROR\n");
+    }
+    else if(f == 0){
+      execvp(argarray[0],argarray);
+    }
+    else{
+      int status;
+      int w = wait(&status);
+    }
+  }
 }
-void exec(){
-  char *s= (char *)(malloc(10*sizeof(char)));
+
+void shell(){
+  char *s = (char *)(malloc(10*sizeof(char)));
   char *command = (char *)(malloc(10*sizeof(char)));
   char *token = (char *)(malloc(10*sizeof(char)));
   int alen = 1; //+1 for NULL
-  printf("$ ");
+
+  //prompt
+  char cwd[256];
+  getcwd(cwd,sizeof(cwd));
+  printf("%s$ ",cwd);
   fgets(s,100,stdin);
+
   s = strip(s);
   command = s;
   // count how many args 
@@ -33,6 +66,7 @@ void exec(){
     token=strchr(token+1,' ');
     alen++;
   }
+  
   s = strsep(&s,"\n");
   char **argarray = (char **)(malloc(alen*3*sizeof(char)));
   //delimiting stuff
@@ -50,28 +84,10 @@ void exec(){
       i++;
     }
   }
-  argarray[i] = NULL;
 
-  if (strcmp(argarray[0],"exit")==0){
-    printf("exit\n");
-    exit(-1);
-  }
-  else if (strcmp(argarray[0],"cd")==0){
-    chdir(argarray[1]);//~ and cd without an arg will not work     
-  }
-  else{
-    int f = fork();
-    if (f < 0){
-      printf("WEIRD ERROR\n");
-    }
-    else if(f == 0){
-      execvp(argarray[0],argarray);
-    }
-    else{
-      int status;
-      int w= wait(&status);
-    }
-  }
+  argarray[i] = NULL;
+  
+  exec(argarray, alen);
 }
 
 
@@ -84,6 +100,6 @@ static void sighandler(int signo){
   
 int main(){
   while(1){
-    exec();
+    shell();
   }
 }
