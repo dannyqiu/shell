@@ -12,7 +12,7 @@ int main(){
 }
 
 int command(){
-  printf("_$ "); //fill _ with something
+  printf("_$ "); //fill _ with something (maybe cwd)
   char s[1024];
   fgets(s,sizeof(s),stdin);
   int n = 2;
@@ -33,12 +33,21 @@ int command(){
 	n++;
   }
   params[n] = NULL;
-  if (! strcmp(params[0],"cd")){
-    
+  if (!strcmp(params[0],"cd")){
+    //put cd in here
   }
-  if (! strcmp(params[0],"exit")){
-    execlp("kill","-9",getpid(),NULL);
+  int f = fork();
+  if (!f){
+    if (!strcmp(params[0],"exit")){
+      char parent[10];
+      snprintf(parent,sizeof(parent),"%d",getppid());
+      execlp("kill","kill","-9",parent,NULL);
+    }
+    execvp(params[0],params);    
+  }else{
+    int status;
+    wait(&status);
+    command();
   }
-  execvp(params[0],params);
-  
+  return 1;
 }
