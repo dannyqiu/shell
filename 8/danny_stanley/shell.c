@@ -43,7 +43,12 @@ int parse_input(char *input) {
     }
     else if (cmd) {
         if (strstr(cmd, "cd") != NULL) {
-            change_directory(argv);
+          if(strstr(cmd, "~") != NULL){
+	    change_directory(argv); //shouldn't this be cmd? argv would have the new line
+	  }
+	  else{//Where you fix the ~, To be implemented
+	    change_directory(argv);
+	  }
         }
         else if (strcmp(cmd, "")) { // Makes sure that the command is not empty
             printf("Running: %s %s\n", cmd, argv);
