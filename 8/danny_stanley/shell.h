@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
+#include <pwd.h>
 
 #define BUFFER_SIZE 1024
 
