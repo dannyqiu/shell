@@ -86,8 +86,8 @@ void change_directory(char *argv) {
     char *path = strsep(&argv, " \n");
     if (strstr(path, "~") != NULL){
       char* home = getenv("HOME");
-      memmove(path , path + 1, 1 + strlen(path + 1)); //Removes the '~'
-      path = strcat(home,path);
+      path++; // Goes beyond ~
+      path = strcat(home, path);
     }
     errno_result = chdir(path);
     if (errno_result == -1) {
