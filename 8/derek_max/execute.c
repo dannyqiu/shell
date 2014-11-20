@@ -64,7 +64,7 @@ int execute(char* input){
 
 }
 
-int main(){
-  execute("asdfasdfasdjfasdfasdfsd");
-}
+//int main(){
+//  execute("asdfasdfasdjfasdfasdfsd");
+//}
 
