@@ -13,7 +13,7 @@ char ** parse(char * input){
   strcpy(running, buf);
   int i = 0;
   char** args = calloc(5,256);
-  char* prev, prev2;
+  char* prev;
   while(1){
 
     prev = strsep(&running, ";");
@@ -23,7 +23,8 @@ char ** parse(char * input){
     args[i] = prev;
     i++;
   }
-  printf("%s\n%s\n\n", args[0], args[1]);
+  args[i] = '\0';
+  printf("%s\n%s\n%s\n", args[0], args[1], args[2]);
   return args;
 }
 
