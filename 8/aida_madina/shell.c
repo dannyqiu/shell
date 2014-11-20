@@ -2,21 +2,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-char[] parse_args(int num_args, char args_array[]) {
-  int i = 0;
-  while (i <= num_args) {
-    args_array[i] = strtok(NULL, " ");
-    i++;
-  }
-  args_array[i]=NULL;
-  return args_array;
-}
+
 
 int main() {
   
   char command[200];
   char *args = command;
-  char args_array[10];
+  char *args_array[10];
   int num_args = 0;
   int pid;
   
@@ -42,11 +34,13 @@ int main() {
       }
 
       char *comm = strtok(args, " ");
-      args_array[0] = (char)comm;
-
-      args_array = parse_args(num_args, args_array);
-     
-      pid = fork();
+      int i = 1;
+      args_array[0]=comm;
+      while (i <= num_args) {
+	args_array[i] = strtok(NULL, " ");
+	i++;
+      }
+      args_array[i]=NULL;
       execvp(args_array[0], args_array);
 
     }
