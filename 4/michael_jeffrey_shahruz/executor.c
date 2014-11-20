@@ -4,7 +4,7 @@
 #include <string.h>
 
 int main(){
-  printf("What do you want to do? ");
+  printf("$: ");
   char s[256];
   fgets( s, 256, stdin );
 
