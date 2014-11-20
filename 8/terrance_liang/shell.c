@@ -46,13 +46,14 @@ void shell(){
       strcat(newdir,"/..");
       chdir(newdir);
     }
-    printf("Command:%s \n",temp);
-    int childcom = fork();
-    if (childcom==0){
-      command(uinput);
-      exit(0);
+    else{
+      int childcom = fork();
+      if (childcom==0){
+	command(uinput);
+	exit(0);
+      }
+      waitpid(childcom);
     }
-    waitpid(childcom);
     shell();
     exit(0);
   }
