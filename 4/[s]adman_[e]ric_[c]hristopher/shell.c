@@ -11,20 +11,16 @@
 
 int main(){
   char* args=calloc(256,sizeof(char));
+
   char* cwd=calloc(256,sizeof(char));  
+  getcwd(cwd,256);
   while (1){
-
-
-    getcwd(cwd,256);
-    printf("%s:::::::",cwd);
+    printf("%s :^) -",cwd);
     fgets(args,256,stdin);
     args = strsep(&args,"\n");
     char* p;
     for(p=args;*p;++p) *p= tolower(*p);
-    printf("\nyou put:-%s-\n",args);
-    printf("\n how many times i fked yo moder: %d\n",strcmp(args,"exit"));
     if (! strcmp(args,"exit")){
-      printf("flag\n");
       exit(0);
     }else if (! strcmp(args,"cd")){
       execlp("cd","cd",args+3);
