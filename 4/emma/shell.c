@@ -39,7 +39,7 @@ int main(){
       exec_array[k] = a2;
       k++;
     }
-    execvp(exec_array[k], exec_array);
+    execvp(exec_array[k], exec_array); //change hereeeeeee need for loop and new int
   }
   //execvp(a[0], a);
   
