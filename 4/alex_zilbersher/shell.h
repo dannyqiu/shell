@@ -4,3 +4,6 @@
 #include <fcntl.h>
 #include <signal.h>
 #include <string.h>
+
+int run();
+int run_command(char* s);

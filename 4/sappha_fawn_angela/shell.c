@@ -27,37 +27,53 @@ void printprompt() {
 void execute(){
   char s[256];
   fgets(s, sizeof(s), stdin);
-  char* s1 = s; 
-  char *sep;
-  char** args = NULL;
+  char* s1 = s;
+  char* s2 = s;
+  char *sep1, *sep2;
+  char** args2 = NULL;
+  char** args1 = NULL;
+  
   int i = 0;
-  s1 = strsep(&s1, "\n");  
+  int j = 0;
 
-  //parsing our command
-  while (sep = strsep(&s1, " ")){
-    i++;
-    args = realloc(args, sizeof(char*)*i);
-    args[i-1] = sep;
+  //parsing command on ";"
+  s1 = strsep(&s1, "\n");
+  while (sep1 = strsep(&s1, ";")){
+    j ++;
+    args1 = realloc(args1, sizeof(char*)*j);
+    args1[j - 1] = sep1;
+    //parsing command on " "
+    while (sep2 = strsep(&s2, " ")){
+      i++;
+      args2 = realloc(args2, sizeof(char*)*i);
+      args2[i-1] = sep2;
+    }
+    args2[i] = 0;
+    /*printf("%s", args1[j - 1]);
+    printf("---");
+    printf("%s\n", args2[i - 1]);*/
   }
-  args[i] = 0;
-  //printf("args[0]:%s\n", args[0]);
-  if (strcmp(args[0], "exit") == 0) { //if calling exit
-    //printf("%s", args[0]);
+  args1[j] = 0;
+  
+  //printf("args2[0]:%s\n", args2[0]);
+  if (strcmp(args2[0], "exit") == 0) { //if calling exit
+    //printf("%s", args2[0]);
     exit(0);
   }
-  else if (strcmp(args[0], "cd") == 0) {//if calling cd
-  
+  else if (strcmp(args2[0], "cd") == 0) {//if calling cd
+    
   }
   else { //otherwise, we need to fork
-    //printf("%s", args[0]);
+    //printf("%s", args2[0]);
     int f, status;
     f = fork();
     if (f == 0) {//child process
-      execvp(args[0], args);
+      execvp(args2[0], args2);
     }
     else {//parent process
       wait(&status);
     } 
   }
-  free(args);
+  free(args2);
+  free(args1);
 }
