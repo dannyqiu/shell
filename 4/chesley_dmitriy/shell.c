@@ -1,10 +1,32 @@
 // TODO dynamically allocated cwd size?
 // TODO expand ~ in command line to $HOME
+// TODO implement parsing of \ escape characters
+// TODO implement proper use of quotation marks
+// TODO command history
+// TODO tab completion
 #include "shell.h"
 
 void print_error() {
     if (errno) {
         printf("[Error %d]: %s\n", errno, strerror(errno));
+    }
+}
+
+char *get_user() {
+    uid_t uid = geteuid();
+    struct passwd *passwd = getpwuid(uid);
+    if (passwd) {
+        return passwd->pw_name;
+    }
+    return "Anon";
+}
+
+char *get_uid_symbol() {
+    if (getuid() != 0) {
+        return "$";
+    }
+    else {
+        return "#";
     }
 }
 
@@ -55,7 +77,7 @@ int main() {
         // Generate prompt
         abbreviate_home(cwd, home, sizeof(cwd));
         char *time_str = get_time_str();
-        sprintf(prompt, "[%s] %s: ", time_str, cwd);
+        sprintf(prompt, "%s%s[%s]%s %s%s%s:%s%s%s%s%s %s%s%s%s\n%s%s>>%s ", bold_prefix, fg_red_160, time_str, reset, bold_prefix, fg_bright_green, get_user(), reset, bold_prefix, fg_blue_39, cwd, reset, bold_prefix, fg_white, get_uid_symbol(), reset, bold_prefix, fg_green, reset);
         free(time_str);
         printf("%s", prompt);
 
@@ -145,8 +167,10 @@ int main() {
         }
         // Free dynamically allocated memory
         free(prompt);
-        for (;optCount >= 0;--optCount) {
-            free(opts[optCount]);
+        if (optCount > 0) {
+            for (;optCount >= 0;--optCount) {
+                free(opts[optCount]);
+            }
         }
         free(opts);
         free(tok);
