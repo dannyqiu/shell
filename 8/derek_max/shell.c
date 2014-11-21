@@ -40,9 +40,10 @@ int main(){
 	}
       }
       //add an if for cd later
+      fflush(stdout);
       execute(commands[i]);
     }
-    printf("hi");
+    printf("hi\n");
     i++;
   }
   return 1;
