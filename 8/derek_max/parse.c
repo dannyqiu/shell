@@ -43,5 +43,5 @@ char ** parse(char * input){
 }
 
 int main(){
-  parse("ls -l; touch cat");
+  parse("ls -l ;   touch cat   ");
 }
