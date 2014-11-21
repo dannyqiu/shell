@@ -11,21 +11,34 @@ void mycd(){
   printf("changed\n");
 }
 
-/*
-void mycd (char* arg) {
-  int err;
-  char *path = strsep(&arg, "\n");
-  char current [256];
-  getcwd (current, sizeof(current));
-  strcat(current, "/");
-  strcat(current, path);
-  err = chdir(current);
-  if (err=-1) {
-    printf("Error");
-  }
-}
+ 
+/* /\* void mycd (char** commands, int numargs) { */
+/*   char base[256];  */
+/*   sprintf(base,"%s%s","/home/students/2015/",getenv("USER")); */
+/*   char current [256]; */
+/*   getcwd (current, sizeof(current)); */
+/*   printf("%s\n", base); */
+/*   int errno; */
+/*   char *path;  */
+/*   if(numargs == 1){ */
+/*     path = base; */
+/*   } */
+/*   /\\*else{ */
+/*     strcat(current, "/"); */
+/*     strcat(current, path); */
+/*     printf("%s\n",current); */
+/*   } */
+/*   *\\/ */
+/*   printf("%s\n", path); */
+/*   int err = chdir(path); */
+/*   // printf("%d", err); */
+/*   if (err==-1) { */
+/*     printf("%s\n", strerror(errno)); */
+/*   } */
+/*   getcwd(current, sizeof(current)); */
+/*   printf("%s\n", current); */
+/* } 
  */
-
 
 
 
