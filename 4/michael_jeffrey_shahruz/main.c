@@ -14,34 +14,40 @@ int main() {
   while(1) {
     printf("^_^: ");
     fgets(s,sizeof(s),stdin);
-    int f = fork();
+    
+    int i=0;
+    for(;s[i]!='\n';i++){
+    }
+    s[i]=0;
 
-    char scpy;
-    strcpy(&scpy,s);
+    char *scpy;
+    scpy=(char*)malloc(1024);
+    strcpy(scpy,s);
+    
     char *first_arg;
     first_arg = strsep(&scpy," ");
     
     if(strcmp("exit",first_arg) == 0) {
       printf("exiting\n");
       exit(0);
-    } else if (strcmp("cd",first_arg) == 0) {
-      printf("cding\n");
-    } else {
-
-   if(f == 0) {
-      exec_line(s);
-    }
+    } 
+    else if (strcmp("cd",first_arg) == 0) {
+      printf("cding\n");  
+    } 
     else {
-      wait(&status);
+      int f = fork();
+      if(f == 0) {
+	exec_line(s);
+      }
+      else {
+	wait(&status);
+      }
+      
     }
-    
   }
-}
 }
 
 int exec_line(char *s) {
- 
-  
   char* s2;
   char *array[256];
   
