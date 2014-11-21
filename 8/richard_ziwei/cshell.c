@@ -70,22 +70,6 @@ char redirection(char arg[]){
     if (!pid){
       ch
    */
-  /*
-  else if (strchr(arg,'<')){
-    int pid = fork();
-    if (!pid){
-      char direct[256];
-      getcwd(direct,256);
-      char * orig = strsep(&arg,"< ");
-      strsep(&arg," ");
-      int fd = open(arg, O_RDONLY);
-      dup2(fd,STDIN_FILENO);
-      close(fd);
-      execlp(orig,orig,NULL);
-    }
-    wait(&pid);
-    return 1;
-    }*/
       
   return 0;
   
