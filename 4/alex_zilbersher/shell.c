@@ -1,10 +1,13 @@
 #include "shell.h"
 
-int run(){
-  char s[256];
-  printf("@&Z ");
-  fgets(s,255,stdin);
-  s[strlen(s)-1]=0;
+int run_command(char* s){
+  if(s==0){
+    char ss[256];
+    printf("@&Z ");
+    fgets(ss,255,stdin);
+    ss[strlen(ss)-1]=0;
+    s=ss;
+  }
   char *args[256];
   char *s1=s;
   char *s2;
@@ -22,21 +25,17 @@ int run(){
     }
   }
   args[i]=0;
-  //printf("%d\n",semi);
   if(semi){
     int f=fork();
     if(f){
       wait(&f);
-      execvp(args[0],args);
+      printf("\n");
+      run_command(s1);
     }else{
-      //run_command();
+      execvp(args[0],args);
     }
   }else{
     execvp(args[0],args);
   }
-  return 0;
-}
-
-int run_command(char* s){
   return 0;
 }
