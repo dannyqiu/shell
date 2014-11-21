@@ -22,11 +22,16 @@ char *get_user() {
 }
 
 char *get_uid_symbol() {
+    const char non_root = '$';
+    const char root = '#';
+    char *symbol = (char *) calloc(sizeof(char), 20);
     if (getuid() != 0) {
-        return "$";
+        sprintf(symbol, "%s%s%c%s", bold_prefix, fg_white, non_root, reset);
+        return symbol;
     }
     else {
-        return "#";
+        sprintf(symbol, "%s%s%c%s", bold_prefix, fg_red_9, root, reset);
+        return symbol;
     }
 }
 
@@ -77,7 +82,9 @@ int main() {
         // Generate prompt
         abbreviate_home(cwd, home, sizeof(cwd));
         char *time_str = get_time_str();
-        snprintf(prompt, PROMPT_MAX_SIZE, "%s%s[%s]%s %s%s%s:%s%s%s%s%s %s%s%s%s\n%s%s>>%s ", bold_prefix, fg_red_160, time_str, reset, bold_prefix, fg_bright_green, get_user(), reset, bold_prefix, fg_blue_39, cwd, reset, bold_prefix, fg_white, get_uid_symbol(), reset, bold_prefix, fg_green, reset);
+        char *uid_symbol = get_uid_symbol();
+        snprintf(prompt, PROMPT_MAX_SIZE, "%s%s[%s]%s %s%s%s:%s%s%s%s%s %s\n%s%s>>%s ", bold_prefix, fg_red_9, time_str, reset, bold_prefix, fg_bright_green, get_user(), reset, bold_prefix, fg_blue_39, cwd, reset, uid_symbol, bold_prefix, fg_green, reset);
+        free(uid_symbol);
         free(time_str);
         printf("%s", prompt);
 
@@ -145,10 +152,15 @@ int main() {
                 exit(0);
             }
             else if (strcmp(opts[0], cmd_cd) == 0){
-                if (chdir(opts[1]) < 0) { // Returns -1 if error
-                    print_error();
-                }
-            }
+	      if (opts[1] == NULL) {
+		if (chdir(home) < 0) { // Returns -1 if error
+		    print_error();
+		}
+	      }
+	      else if (chdir(opts[1]) < 0) { // Returns -1 if error
+		print_error();
+	      }
+	    }
             else {
                 // Execution
                 int child_pid = fork();
