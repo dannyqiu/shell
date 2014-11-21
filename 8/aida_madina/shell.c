@@ -27,6 +27,8 @@ int main() {
       p++;
     }
     char *comm = strtok(command, " ");
+    //if comm == exit or cd, we take care of their respective processes
+    //else, we do what we currently have
     args_array[0] = comm;
     if (num_args== 0) {
       args_array[1]=NULL;

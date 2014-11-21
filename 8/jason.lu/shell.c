@@ -40,23 +40,29 @@ int main(){
 
     //attempt at semicolon
     char ** superargs = parse(input,";"); 
+    int j = 0;
+    while(superargs[j]){
+      
     
-    char ** args = parse(input," ");
+      char ** args = parse(superargs[j]," ");
 
    
     
     
-    //Executes input
-    if(strcmp(args[0],"exit") == 0){
-      exit(0);
-    }else if(strcmp(args[0],"cd") == 0){
-      chdir(args[1]);
-    }else{
-      int f = fork();
-      if(!f){
-	execvp(args[0],args);
-	printf("Command not found\n");
+      //Executes input
+      if(strcmp(args[0],"exit") == 0){
+	exit(0);
+      }else if(strcmp(args[0],"cd") == 0){
+	chdir(args[1]);
+      }else{
+	int f = fork();
+	if(!f){
+	  execvp(args[0],args);
+	  printf("Command not found\n");
+	}
       }
+      
+      j++;
     }
     
   }

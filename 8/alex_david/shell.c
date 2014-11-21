@@ -39,8 +39,10 @@ int command(){
   int f = fork();
   if (!f){
     if (!strcmp(params[0],"exit")){
+      dup2(4,STDOUT_FILENO); //fix printing
       char parent[10];
-      snprintf(parent,sizeof(parent),"%d",getppid());
+      sprintf(parent,"%d",getppid());
+      //snprintf(parent,sizeof(parent),"%d",getppid());
       execlp("kill","kill","-9",parent,NULL);
     }
     execvp(params[0],params);    
