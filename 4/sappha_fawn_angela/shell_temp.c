@@ -20,6 +20,7 @@ int main() {
     execute(parsed[i]);
     i++;
     printf("parsed[i]:%s\n",parsed[i]);
+    execute(parsed[i]);
    
    
   }
@@ -59,33 +60,36 @@ void execute(char a[256]){
   char *sep;
   char** arg = NULL;
   int i = 0;
-  s1 = strsep(&s1, "\n");  
-  
-  //parsing our command
-  while (sep = strsep(&s1, " ")){
-    i++;
-    arg = realloc(arg, sizeof(char*)*i);
-    arg[i-1] = sep;
-  }
-  arg[i] = 0;
-  //printf("arg[0]:%s\n", args[0]);
-  if (strcmp(arg[0], "exit") == 0) { //if calling exit
-    //printf("%s", args[0]);
-    exit(0);
-  }
-  else if (strcmp(arg[0], "cd") == 0) {//if calling cd
-  
-  }
-  else { //otherwise, we need to fork
-    //printf("%s", arg[0]);
-    int f, status;
-    f = fork();
-    if (f == 0) {//child process
-      execvp(arg[0], arg);
+  if (s1 != NULL){
+    
+    s1 = strsep(&s1, "\n");
+    
+    //parsing our command
+    while (sep = strsep(&s1, " ")){
+      i++;
+      arg = realloc(arg, sizeof(char*)*i);
+      arg[i-1] = sep;
     }
-    else {//parent process
-      wait(&status);
-    } 
-  }
+    arg[i] = 0;
+    //printf("arg[0]:%s\n", args[0]);
+    if (strcmp(arg[0], "exit") == 0) { //if calling exit
+      //printf("%s", args[0]);
+      exit(0);
+    }
+    else if (strcmp(arg[0], "cd") == 0) {//if calling cd
+      
+    }
+    else { //otherwise, we need to fork
+      //printf("%s", arg[0]);
+      int f, status;
+      f = fork();
+      if (f == 0) {//child process
+	execvp(arg[0], arg);
+      }
+      else {//parent process
+	wait(&status);
+      } 
+    }
   free(arg);
+  }
 }
