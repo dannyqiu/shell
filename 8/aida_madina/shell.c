@@ -7,7 +7,6 @@
 int main() {
   
   char command[200];
-  char *args = command;
   char *args_array[10];
   int num_args = 0;
   int pid;
@@ -27,7 +26,7 @@ int main() {
       }
       p++;
     }
-    char *comm = strtok(args, " ");
+    char *comm = strtok(command, " ");
     //if comm == exit or cd, we take care of their respective processes
     //else, we do what we currently have
     args_array[0] = comm;
