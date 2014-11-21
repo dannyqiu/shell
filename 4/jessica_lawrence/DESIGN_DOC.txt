@@ -1,0 +1,27 @@
+:^) prompt
+by Jessica Ng and Lawrence Lim
+
+Features:
+    Forks and executes commands!
+    That's it!
+
+Attempted:
+    ayy lmao
+
+Bugs:
+    grasshoppers
+
+Files & Function Headers:
+main.c
+    /***** int main() *****
+     * :^)
+     ***************/
+
+shell.c
+    /***** void prompt(char* s) *****
+     * :^)
+     ***************/
+
+    /***** void docmd(char* s) *****
+     * :^)
+     ***************/

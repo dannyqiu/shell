@@ -34,17 +34,33 @@ void normal_stuff(char arg[]){
 
 char redirection(char arg[]){
   //Multiple pipes and redirects?
-  if (strchr(arg,'>')){
+  if (strchr(arg,'>') || strchr(arg,'<')){
     int pid = fork();
     if (!pid){
-      char * orig=strsep(&arg,"> ");
-      strsep(&arg," ");
-      printf("orig:%s\n",orig);
-      printf("arg:%s\n",arg);
-      int fd = open(arg, O_CREAT | O_WRONLY, 0644);
-      dup2(fd,STDOUT_FILENO);
+      char * orig;
+      int fd;
+      if (strchr(arg,'>')){
+	orig=strsep(&arg,"> ");
+	int mode;
+	if (arg[1] == '>'){
+	  mode = O_APPEND;
+	}
+	strsep(&arg," ");
+	fd=open(arg, O_CREAT | O_WRONLY | mode, 0644);
+	dup2(fd,STDOUT_FILENO);
+      }
+      else{
+	orig = strsep(&arg,"< ");
+	strsep(&arg," ");
+	fd=open(arg, O_RDONLY);
+	dup2(fd,STDIN_FILENO);
+	//printf("I GET THIS FAR\n");
+      }
       close(fd);
+      //normal_stuff(orig);
+      
       execlp(orig,orig,NULL);//FIX THIS TO ACCEPT ARGS
+      
     }
     wait(&pid);
     return 1;
@@ -54,10 +70,12 @@ char redirection(char arg[]){
     if (!pid){
       ch
    */
+      
   return 0;
   
 }
 int main(){
+  //should probably factor this so ; works
   while (1){
     char input[256];
     char direct[256];

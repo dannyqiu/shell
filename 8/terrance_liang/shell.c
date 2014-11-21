@@ -35,24 +35,36 @@ void shell(){
   fgets(uinput,sizeof(uinput),stdin);
   char *temp = uinput;
   temp=strsep(&temp,"\n");
+  /* code for exit */
   if (strcmp(uinput,"exit")==0){
     printf("Bye!\n");
     exit(0);
   }
-  else{    
-    temp=strsep(&temp," ");
+  /* end of code for exit */
+  else{
+    /* code for cd */
+    char* blah=temp;
+    temp=strsep(&blah," ");
     if (strcmp(temp,"cd")==0){
       char *newdir = currdir;
-      strcat(newdir,"/..");
+      if (blah){
+	strcat(newdir,"/");
+	strcat(newdir,blah);
+      }
+      else{
+	strcat(newdir,"/..");
+      }
       chdir(newdir);
     }
-    printf("Command:%s \n",temp);
-    int childcom = fork();
-    if (childcom==0){
-      command(uinput);
-      exit(0);
+    /* end of code for cd */
+    else{
+      int childcom = fork();
+      if (childcom==0){
+	command(uinput);
+	exit(0);
+      }
+      waitpid(childcom);
     }
-    waitpid(childcom);
     shell();
     exit(0);
   }

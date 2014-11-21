@@ -3,6 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "shell.h"
+
 char** parse(char* input, char* s){
   strtok( input, "\n");
     int count = 0;
@@ -43,12 +45,8 @@ int main(){
     int j = 0;
     while(superargs[j]){
       
-    
       char ** args = parse(superargs[j]," ");
 
-   
-    
-    
       //Executes input
       if(strcmp(args[0],"exit") == 0){
 	exit(0);
