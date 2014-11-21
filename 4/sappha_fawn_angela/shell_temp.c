@@ -53,10 +53,10 @@ void printprompt() {
   printf("owl:%s$ ", wd);
 }
 
-void execute(char a[256]){
+void execute(char * a){ //error here with * vs []
   char* s1;
   strcpy(s1,a);
-  printf("\n%s\n", s1);-
+  printf("\n%s\n", s1);
   char *sep;
   char** arg = NULL;
   int i = 0;
