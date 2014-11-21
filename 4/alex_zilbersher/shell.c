@@ -13,7 +13,6 @@ int run(){
   while(s2=strsep(&s1," ")){
     if(strcmp(s2,"")!=0){
       if(strcmp(s2,";")!=0){
-	//printf("s2:%s.\n",s2);
 	args[i]=s2;
 	i++;
       }else{
