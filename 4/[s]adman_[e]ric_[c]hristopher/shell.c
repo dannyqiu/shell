@@ -17,7 +17,7 @@ int main(){
   getcwd(cwd,256);
   int status;
   while (1){
-    printf("%s :^) -",cwd);
+    printf("(ﾉ◕ヮ◕)ﾉ*:・ﾟ✧");
     fgets(args,256,stdin);
     args = strsep(&args,"\n");
 
