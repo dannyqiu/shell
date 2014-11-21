@@ -21,26 +21,29 @@ char *get_user() {
     return "Anon";
 }
 
-char *get_uid_symbol() {
+char *get_uid_symbol(char *uid_symbol_container) {
+    const char non_root = '$';
+    const char root = '#';
     if (getuid() != 0) {
-        return "$";
+        sprintf(uid_symbol_container, "%s%s%c%s", bold_prefix, fg_white, non_root, reset);
+        return uid_symbol_container;
     }
     else {
-        return "#";
+        sprintf(uid_symbol_container, "%s%s%c%s", bold_prefix, fg_red_9, root, reset);
+        return uid_symbol_container;
     }
 }
 
-char *get_time_str() {
+char *get_time_str(char *time_str_container) {
     time_t rawtime;
     time(&rawtime);
     struct tm *time = localtime(&rawtime);
-    char *time_str = (char *) malloc(DATE_MAX_SIZE);
     // TODO size check
     // Pad integer with zeroes to a length of 2
-    if (sprintf(time_str, "%'02d:%'02d:%'02d", time->tm_hour, time->tm_min, time->tm_sec) < 0) {
+    if (sprintf(time_str_container, "%'02d:%'02d:%'02d", time->tm_hour, time->tm_min, time->tm_sec) < 0) {
         printf("[Error]: Error formatting time string.");
     }
-    return time_str;
+    return time_str_container;
 }
 
 void abbreviate_home(char *full_path, const char *home_dir, size_t full_path_length) {
@@ -55,6 +58,25 @@ void abbreviate_home(char *full_path, const char *home_dir, size_t full_path_len
         trunc_path[path_size - 1] = '\0';
         strncpy(full_path, trunc_path, full_path_length);
         free(trunc_path);
+    }
+}
+
+void trim_whitespace(char *input) {
+    // TODO trim trailing whitespace
+    int i = 0;
+    // Count number of preceding whitespace
+    int num_preceding_whitespace = 0;
+    while (input[i] && input[i] == ' ') {
+        ++num_preceding_whitespace;
+        ++i;
+    }
+    // Trim preceding whitespace
+    i = 0;
+    if (num_preceding_whitespace > 0) {
+        while(input[i]) {
+            input[i] = input[i + num_preceding_whitespace];
+            ++i;
+        }
     }
 }
 
@@ -76,8 +98,12 @@ int main() {
         }
         // Generate prompt
         abbreviate_home(cwd, home, sizeof(cwd));
-        char *time_str = get_time_str();
-        snprintf(prompt, PROMPT_MAX_SIZE, "%s%s[%s]%s %s%s%s:%s%s%s%s%s %s%s%s%s\n%s%s>>%s ", bold_prefix, fg_red_160, time_str, reset, bold_prefix, fg_bright_green, get_user(), reset, bold_prefix, fg_blue_39, cwd, reset, bold_prefix, fg_white, get_uid_symbol(), reset, bold_prefix, fg_green, reset);
+        char *time_str = (char *) malloc (DATE_MAX_SIZE);
+        get_time_str(time_str);
+        char *uid_symbol = (char *) calloc(sizeof(char), 20);
+        get_uid_symbol(uid_symbol);
+        snprintf(prompt, PROMPT_MAX_SIZE, "%s%s[%s]%s %s%s%s:%s%s%s%s%s %s\n%s%s>>%s ", bold_prefix, fg_red_9, time_str, reset, bold_prefix, fg_bright_green, get_user(), reset, bold_prefix, fg_blue_39, cwd, reset, uid_symbol, bold_prefix, fg_green, reset);
+        free(uid_symbol);
         free(time_str);
         printf("%s", prompt);
 
@@ -87,6 +113,8 @@ int main() {
         }
         // Parse input
         int i = 0, optCount = 0, tokIndex = 0;
+        // Trim whitespace
+        trim_whitespace(input);
         // Iterate through each char of input
         while (input[i]) {
             if (input[i] != '\n') {
@@ -145,10 +173,15 @@ int main() {
                 exit(0);
             }
             else if (strcmp(opts[0], cmd_cd) == 0){
-                if (chdir(opts[1]) < 0) { // Returns -1 if error
-                    print_error();
-                }
-            }
+	      if (opts[1] == NULL) {
+		if (chdir(home) < 0) { // Returns -1 if error
+		    print_error();
+		}
+	      }
+	      else if (chdir(opts[1]) < 0) { // Returns -1 if error
+		print_error();
+	      }
+	    }
             else {
                 // Execution
                 int child_pid = fork();
