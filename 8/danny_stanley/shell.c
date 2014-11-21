@@ -3,28 +3,32 @@
 int errno_result; // Used in collaboration with errno if function fails
 
 void shell() {
+    char *path_buf = (char *) malloc(BUFFER_SIZE);
     char *input = (char *) malloc(BUFFER_SIZE);
     int done = 0;
     //Getting the Home Directory
+    /* Old SMART way
     uid_t user = getuid();
     struct passwd * pwd;
     pwd = getpwuid(user);
     char* home = pwd->pw_dir;
+    */
+    //Fast efficient way
+    char *home = getenv("HOME"); // Required because somehow the environment variable changes when you chdir ~/Desktop
     while (!done) {
-      char buf[BUFFER_SIZE];
-      getcwd(buf,BUFFER_SIZE);
-      char *tmp = strdup(buf);
-      char* path = strstr(tmp,home);
-      if(path == NULL){
-	printf("StD: %s ᐅ ", buf);
+      getcwd(path_buf, BUFFER_SIZE);
+      char *home_index = strstr(path_buf, home);
+      //printf("%s -- %s\n", path_buf, home);
+      if (home_index == NULL) {
+	printf("\e[37;1mStD: \e[36;1m%s\e[32;1m ᐅ \e[033;0m", path_buf);
       }
-      else{
-	memmove(path,path+strlen(home),1+strlen(path+strlen(home))); //Removes the home directory
-	printf("StD: ~%s ᐅ ", path);
+      else {
+	printf("\e[37;1mStD: \e[36;1m~%s\e[32;1m ᐅ \e[033;0m", path_buf + strlen(home)); // Removes the home directory from path
       }
       fflush(stdout);
       done = parse_input(input);
     }
+    free(path_buf);
     free(input);
 }
 
@@ -78,13 +82,21 @@ void call_cmd(char *cmd, char *argv) {
 }
 
 void change_directory(char *argv) {
+    while (argv[0] == ' ') {
+        argv++; // Remove empty spaces in front of path
+    }
     char *path = strsep(&argv, " \n");
-    if (strstr(path, "~") != NULL){
-    //Where you fix the ~, To be implemented
-        printf("GOTTA FIX THIS ~!\n");
+    char *home_cpy = strdup(getenv("HOME"));
+    if (path[0] == '~') {
+        path++; // Goes beyond ~
+        path = strcat(home_cpy, path);
+    }
+    else if (path[0] == '\0') { // When no path specified, use home
+        path = home_cpy;
     }
     errno_result = chdir(path);
     if (errno_result == -1) {
         printf("%s: %s\n", "cd", strerror(errno));
     }
+    free(home_cpy);
 }
