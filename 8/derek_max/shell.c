@@ -23,7 +23,11 @@ int main(){
   commands[2] = "exit";
   commands[3] = "exit";
   */
-  while(*commands[i]){
+  while(1){
+    printf("help:%p\n", *(commands[i]));
+    if(!(*commands[i])){
+      break;
+    }
     printf("> ");
     printf("commands[%d]:%s\n", i, commands[i]);
     if(commands[i]){
