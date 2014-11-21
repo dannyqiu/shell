@@ -7,13 +7,13 @@
 // Execs a function, parsing the input and running execvp
 int exec_line(char *input);
 
+void runs_command(char *scpy);
 
 int main() {
   int status;
   char s[1024];
   char *s2;
   char *s1;
-  char *first_arg;
   char *scpy;
   int i;
   char *commands[1024];
@@ -21,7 +21,7 @@ int main() {
   while(1) {
     printf("^_^: ");
     fgets(s,sizeof(s),stdin);
-    int f = fork();
+
 
     scpy = malloc(1024);
     strcpy(scpy,s);
@@ -34,8 +34,20 @@ int main() {
     }
     //
 
+    for(i=0;scpy;i++) {
+      scpy = commands[i];
+      printf("Command(%d): %s\n",i,scpy);
+      runs_command(scpy);
+    }
     
-    first_arg = strsep(&scpy," ");
+  }
+}
+
+void runs_command(char *scpy) {
+  int f =fork();
+  char s[1024];
+  char *first_arg;
+  first_arg = strsep(&scpy," ");
     printf("scpy: %s\n",scpy);
     
     if(strcmp("exit",first_arg) == 0) {
@@ -48,13 +60,11 @@ int main() {
       exec_line(s);
     }
     else {
-      wait(&status);
+      wait(NULL);
     }
-    
-  }
-}
-}
 
+    }
+}
 int exec_line(char *s) {
  
   
