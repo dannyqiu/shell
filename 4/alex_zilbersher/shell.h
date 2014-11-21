@@ -7,3 +7,4 @@
 
 int run();
 int run_command(char* s);
+int cd(char* s);
