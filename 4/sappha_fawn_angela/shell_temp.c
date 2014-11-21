@@ -16,6 +16,7 @@ int main() {
     //printf("args:%s",parsed[1]);
    
     int i = 0;
+    //for some reason execute is not getting parsed[i] correctly
     printf("parsed[i]:%s\n",parsed[i]);
     execute(parsed[i]);
     i++;
@@ -28,7 +29,8 @@ int main() {
 char** parser(){
   char s[256];
   fgets(s, sizeof(s), stdin);
-  char* s1 = s; 
+  char* s1 = s;
+  //printf("/ns1: %s\n", s1);
   char *sep;
   char** args = NULL;
   int i = 0;
@@ -53,10 +55,10 @@ void printprompt() {
   printf("owl:%s$ ", wd);
 }
 
-void execute(char * a){ //error here with * vs []
-  char* s1;
-  strcpy(s1,a);
-  printf("\n%s\n", s1);
+void execute(char * a){ //error here with * vs {}
+  printf("\na:%s\n", a); //returns empty string???
+  char* s1 = a;
+  printf("\ns1:%s\n", s1);
   char *sep;
   char** arg = NULL;
   int i = 0;
