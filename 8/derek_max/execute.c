@@ -70,8 +70,8 @@ int execute(char* input){
       exit(EXIT_FAILURE); //only runs if execvp fails
   }
 }
-
+/*
 int main(){
   execute("ls -al > a.txt");
 }
-
+*/
