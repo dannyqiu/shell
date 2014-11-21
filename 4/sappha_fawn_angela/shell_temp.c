@@ -21,7 +21,6 @@ int main() {
     i++;
     printf("parsed[i]:%s\n",parsed[i]);
    
-   
   }
   return 0;
 }
@@ -55,7 +54,9 @@ void printprompt() {
 }
 
 void execute(char a[256]){
-  char* s1 = a; 
+  char* s1;
+  strcpy(s1,a);
+  printf("\n%s\n", s1);-
   char *sep;
   char** arg = NULL;
   int i = 0;
@@ -63,9 +64,11 @@ void execute(char a[256]){
   
   //parsing our command
   while (sep = strsep(&s1, " ")){
+    printf("sep: %s\n", sep);
     i++;
     arg = realloc(arg, sizeof(char*)*i);
     arg[i-1] = sep;
+    printf("arg[i-1]: %s\n", arg[i-1]);
   }
   arg[i] = 0;
   //printf("arg[0]:%s\n", args[0]);
@@ -87,5 +90,5 @@ void execute(char a[256]){
       wait(&status);
     } 
   }
-  free(arg);
+  //free(arg);
 }
