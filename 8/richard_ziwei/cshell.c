@@ -34,15 +34,28 @@ void normal_stuff(char arg[]){
 
 char redirection(char arg[]){
   //Multiple pipes and redirects?
-  if (strchr(arg,'>')){
+  if (strchr(arg,'>') || strchr(arg,'<')){
     int pid = fork();
     if (!pid){
-      char * orig=strsep(&arg,"> ");
-      strsep(&arg," ");
-      int fd = open(arg, O_CREAT | O_WRONLY, 0644);
-      dup2(fd,STDOUT_FILENO);
+      char * orig;
+      int fd;
+      if (strchr(arg,'>')){
+	orig=strsep(&arg,"> ");
+	strsep(&arg," ");
+	fd=open(arg, O_CREAT | O_WRONLY, 0644);
+	dup2(fd,STDOUT_FILENO);
+      }
+      else{
+	orig = strsep(&arg,"< ");
+	strsep(&arg," ");
+	fd=open(arg, O_RDONLY);
+	dup2(fd,STDIN_FILENO);
+      }
       close(fd);
+      //normal_stuff(orig);
+      
       execlp(orig,orig,NULL);//FIX THIS TO ACCEPT ARGS
+      
     }
     wait(&pid);
     return 1;
@@ -52,6 +65,7 @@ char redirection(char arg[]){
     if (!pid){
       ch
    */
+  /*
   else if (strchr(arg,'<')){
     int pid = fork();
     if (!pid){
@@ -66,7 +80,7 @@ char redirection(char arg[]){
     }
     wait(&pid);
     return 1;
-  }
+    }*/
       
   return 0;
   

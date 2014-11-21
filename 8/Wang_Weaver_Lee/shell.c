@@ -11,6 +11,22 @@ void mycd(){
   printf("changed\n");
 }
 
+/*
+void mycd (char* arg) {
+  int err;
+  char *path = strsep(&arg, "\n");
+  char current [256];
+  getcwd (current, sizeof(current));
+  strcat(current, "/");
+  strcat(current, path);
+  err = chdir(current);
+  if (err=-1) {
+    printf("Error");
+  }
+}
+ */
+
+
 
 
 void redirect(char *input){
