@@ -15,40 +15,14 @@ So when the value is being returned is where it gets messed up somehow
 */
 
 //parse
-char** parse(){
+/*char** parse(){
  
-  char s1[256];
-
-  fgets(s1, sizeof(s1), stdin);
-  s1[strlen(s1)-1]='/0';
-
-  char * s = s1;
-  char ** args = (char**)malloc(sizeof(char *) * 50);
-  char * temp = strsep(&s, " ");
-  //args[0] = temp;
-
-  int i=0;
-  while(temp){
-    printf("?????????%s\n", temp);//     
-    args[i] = temp;    
-    temp = strsep(&s, " ");
-    
-    i ++;   
-  }
-
-  printf("%d   working???\n", i);  
-  args[i] = 0;
-  
-  i=0;
-  while(args[i]){
-    printf("args[%d]:  %s\t",i,args[i]);
-    i++;
-  }
+ 
 
 
   return args;
 
-}
+  }*/
 
 
 int redirection (char * source, char * dest){
@@ -56,7 +30,7 @@ int redirection (char * source, char * dest){
   return 0;
 }
 
-void print_promt(){
+void print_prompt(){
   char path[256];
   getcwd(path, 256);  
   
@@ -65,37 +39,59 @@ void print_promt(){
 
 int main(){
 
-  print_promt();
-
-  while(1){
+  print_prompt();
+  int run = 1;
+  while(run){
 
     //   char ** a =  (char**)malloc(sizeof(char *) * 50);
-    char ** a = parse();
+    //char ** a = parse();
     
+    //PARSING
+    char s1[256];
+    fgets(s1, sizeof(s1), stdin);
+    s1[strlen(s1)-1]='\0';
+
+    char * s = s1;
+    char ** args = (char**)malloc(sizeof(char *) * 50);
+    char * temp = strsep(&s, " ");
+
     int i=0;
-    while(a[i]){
-      printf("command:  %s\t",a[i]);
+    while(temp){
+      args[i] = temp;    
+      temp = strsep(&s, " ");
+      i ++;   
+    }
+    args[i] = 0;
+  
+    /* testing that parsing works
+      i=0;
+      while(args[i]){
+      printf("args[%d]:  %s\t",i,args[i]);
       i++;
-    }
-
-      /*
-    if (a[0] == "exit"){
-      execlp("exit","exit", NULL);
-    }
-    if (a[0] == "cd"){
-      execvp("cd", a );
       }*/
-    //else{
+    
 
-    /*
+    //RUNNING PARSED CODE 
+    if (strcmp(args[0], "exit") == 0){
+      run = 0;
+      printf("BYE!!!!\n");
+    }
+    else if  (strcmp(args[0], "cd") == 0){
+      chdir(args[1]);
+      print_prompt();
+    }
+    else{  
       int f = fork();
+      int status;
       if( !f ){
-	execvp(a[0], a );
+	execvp(args[0], args );
 	//everything else
 	//redirection
-            
-	}*/
-
+      }else{
+	wait(&status);
+	print_prompt();
+      }
+    }
   }
   
   return 0;
