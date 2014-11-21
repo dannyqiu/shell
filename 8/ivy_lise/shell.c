@@ -55,7 +55,13 @@ void shell(){
   //prompt
   char cwd[256];
   getcwd(cwd,sizeof(cwd));
-  printf("%s$ ",cwd);
+  if(strstr(cwd,getenv("HOME"))){
+    //printf("There exists HOME in pwd.\n");
+    char * path = strdup(cwd+strlen(getenv("HOME")));
+    printf("~%s$ ",path);
+  } else {
+    printf("%s$ ",cwd);
+  }
   fgets(s,100,stdin);
 
   s = strip(s);
@@ -74,7 +80,7 @@ void shell(){
   token = s;
   argarray[i] = token;
   while (token = strsep(&s," ")){
-    //getting rid of empty tokens btw arguments
+    //getting rid of empty tokens btwnXS arguments
     if (strlen(token)==0){
       alen--;
       argarray=realloc(argarray,alen*3*sizeof(char));
