@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 
 void prompt(char* s) {
-  printf ("shell prompt: ");
+  printf ("[ :^) ]  ");
   fgets (s, 256, stdin);
 }
 
