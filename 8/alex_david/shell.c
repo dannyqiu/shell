@@ -66,7 +66,6 @@ int command(){
     }
     cd (params [i]); // note to self ~ and / don't work, make ; work for other commands
   }
-  int *e = 0;
   int f = fork();
   if (!f){
     if (!strcmp(params[0],"exit")){
