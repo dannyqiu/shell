@@ -5,6 +5,20 @@
 #include "execute.h"
 #include <errno.h>
 
+char *removespace(char *str) // remove leading space
+{
+  char *temp;
+  while(isspace(*str)) str++;
+  if(*str == 0) 
+    return str;
+  
+  temp = str + strlen(str) - 1;
+  while(temp > str && isspace(*temp)) temp--;
+  *(temp+1) = 0;
+  
+  return str;
+}
+
 char ** parse(char * input){
   char buf[256];
   strcpy(buf, input);
@@ -13,20 +27,21 @@ char ** parse(char * input){
   strcpy(running, buf);
   int i = 0;
   char** args = calloc(5,256);
-  char* prev, prev2;
+  char* prev;
   while(1){
 
     prev = strsep(&running, ";");
     if(!prev){
       break;
     }
-    args[i] = prev;
+    args[i] = removespace(prev);
     i++;
   }
-  printf("%s\n%s\n\n", args[0], args[1]);
+  args[i] = '\0';
+  printf("%s\n%s\n%s\n", args[0], args[1], args[2]);
   return args;
 }
 
 int main(){
-  parse("ls -l; touch cat");
+  parse("ls -l ;   touch cat   ");
 }
