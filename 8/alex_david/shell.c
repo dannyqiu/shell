@@ -4,8 +4,16 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <signal.h>
+
+static void sighandler(int signo){
+  if (signo == SIGUSR1){
+    exit(0);
+  }
+}
 
 int main(){
+  signal(SIGUSR1,sighandler);
   printf("-- _ SHELL --\n\n"); //fill _ with name or change]
   command();
   return 0;
@@ -36,14 +44,15 @@ int command(){
   if (!strcmp(params[0],"cd")){
     //put cd in here
   }
+  int *e = 0;
   int f = fork();
   if (!f){
     if (!strcmp(params[0],"exit")){
-      dup2(4,STDOUT_FILENO); //fix printing
+      printf("Bye!\n\n");
+      dup2(STDIN_FILENO,STDOUT_FILENO);
       char parent[10];
       sprintf(parent,"%d",getppid());
-      //snprintf(parent,sizeof(parent),"%d",getppid());
-      execlp("kill","kill","-9",parent,NULL);
+      execlp("kill","kill","-10",parent,NULL);
     }
     execvp(params[0],params);    
   }else{
