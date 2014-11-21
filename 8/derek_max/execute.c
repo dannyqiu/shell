@@ -34,6 +34,7 @@ int execute(char* input){
   int i = 0;
   char** args = calloc(5,256);
   char* prev;
+  printf("hallo!\n");
   while(1){
 
     prev = strsep(&running, " ");
@@ -43,15 +44,18 @@ int execute(char* input){
     args[i] = prev;
     i++;
   }
-
+  printf("hallo2!\n");
   pid_t f = fork();
   int status;
   int w;
   if (f > 0){ //parent
     w = wait(&status);
-    exit(0);
+    printf("i r parent\n");
+    return 1;
+    //exit(0);
   }
   else if (f<0){
+    printf("%s\n", strerror(errno));
     exit(EXIT_FAILURE);
   }
   else{
@@ -59,9 +63,6 @@ int execute(char* input){
       printf("%s\n", strerror(errno));
       exit(EXIT_FAILURE); //only runs if execvp fails
   }
-
-
-
 }
 
 //int main(){
