@@ -3,13 +3,14 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include "executor.h"
-
+#include <signal.h>
+#include "signal.h"
 
 int main(){
 
   chdir(getenv("HOME"));
   
+  signal(SIGINT, sighandler);
   while(1){
 
     char input[256];
