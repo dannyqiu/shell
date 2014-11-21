@@ -39,8 +39,6 @@ char redirection(char arg[]){
     if (!pid){
       char * orig=strsep(&arg,"> ");
       strsep(&arg," ");
-      printf("orig:%s\n",orig);
-      printf("arg:%s\n",arg);
       int fd = open(arg, O_CREAT | O_WRONLY, 0644);
       dup2(fd,STDOUT_FILENO);
       close(fd);
@@ -54,10 +52,27 @@ char redirection(char arg[]){
     if (!pid){
       ch
    */
+  else if (strchr(arg,'<')){
+    int pid = fork();
+    if (!pid){
+      char direct[256];
+      getcwd(direct,256);
+      char * orig = strsep(&arg,"< ");
+      strsep(&arg," ");
+      int fd = open(arg, O_RDONLY);
+      dup2(fd,STDIN_FILENO);
+      close(fd);
+      execlp(orig,orig,NULL);
+    }
+    wait(&pid);
+    return 1;
+  }
+      
   return 0;
   
 }
 int main(){
+  //should probably factor this so ; works
   while (1){
     char input[256];
     char direct[256];
