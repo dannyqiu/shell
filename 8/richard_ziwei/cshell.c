@@ -41,8 +41,12 @@ char redirection(char arg[]){
       int fd;
       if (strchr(arg,'>')){
 	orig=strsep(&arg,"> ");
+	int mode;
+	if (arg[1] == '>'){
+	  mode = O_APPEND;
+	}
 	strsep(&arg," ");
-	fd=open(arg, O_CREAT | O_WRONLY, 0644);
+	fd=open(arg, O_CREAT | O_WRONLY | mode, 0644);
 	dup2(fd,STDOUT_FILENO);
       }
       else{
@@ -50,6 +54,7 @@ char redirection(char arg[]){
 	strsep(&arg," ");
 	fd=open(arg, O_RDONLY);
 	dup2(fd,STDIN_FILENO);
+	//printf("I GET THIS FAR\n");
       }
       close(fd);
       //normal_stuff(orig);
