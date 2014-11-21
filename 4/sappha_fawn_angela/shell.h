@@ -7,7 +7,5 @@
 #include <sys/stat.h>
 #include <signal.h>
 
-
-
 void printprompt();
 void execute();

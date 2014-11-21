@@ -36,12 +36,15 @@ int main(){
     char *temp = input_str; //strsep needs char*, not char[]
     char *raw_str = strsep(&temp, "\n"); //removes ending line break
         
-    //strchr for ;
+
     char *split_cmds; //holds the piece separated off from raw_str (a cmd + arg string)
-    //char * cmds[10]; //cmd array
+
     int c = 0;
     char *split_args; //holds the piece separated off from x
     char * args[10]; //arg array
+    char * redirect;
+    //if (restrchr(raw_str,">") != -1){
+      
     while( (split_cmds = strsep(&raw_str, ";")) ) {
       c++;
       int a = 0;
