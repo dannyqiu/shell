@@ -22,7 +22,6 @@ int main() {
     printf("parsed[i]:%s\n",parsed[i]);
     execute(parsed[i]);
    
-   
   }
   return 0;
 }
@@ -55,20 +54,24 @@ void printprompt() {
   printf("owl:%s$ ", wd);
 }
 
-void execute(char a[256]){
-  char* s1 = a; 
+void execute(char * a){ //error here with * vs []
+  char* s1;
+  strcpy(s1,a);
+  printf("\n%s\n", s1);
   char *sep;
   char** arg = NULL;
   int i = 0;
   if (s1 != NULL){
-    
-    s1 = strsep(&s1, "\n");
-    
+  
+    s1 = strsep(&s1, "\n");  
+  
     //parsing our command
     while (sep = strsep(&s1, " ")){
+      printf("sep: %s\n", sep);
       i++;
       arg = realloc(arg, sizeof(char*)*i);
       arg[i-1] = sep;
+      printf("arg[i-1]: %s\n", arg[i-1]);
     }
     arg[i] = 0;
     //printf("arg[0]:%s\n", args[0]);
@@ -77,7 +80,7 @@ void execute(char a[256]){
       exit(0);
     }
     else if (strcmp(arg[0], "cd") == 0) {//if calling cd
-      
+  
     }
     else { //otherwise, we need to fork
       //printf("%s", arg[0]);
@@ -90,6 +93,6 @@ void execute(char a[256]){
 	wait(&status);
       } 
     }
-  free(arg);
+    //free(arg);
   }
 }
