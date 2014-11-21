@@ -28,11 +28,13 @@ int main() {
     first_arg = strsep(&scpy," ");
     
     if(strcmp("exit",first_arg) == 0) {
-      printf("exiting\n");
+      printf("Exiting\n");
       exit(0);
     } 
     else if (strcmp("cd",first_arg) == 0) {
-      printf("cding\n");  
+      chdir(scpy);
+      getcwd(first_arg,sizeof(first_arg));
+      printf("Cding to \n");
     } 
     else {
       int f = fork();
