@@ -1,4 +1,4 @@
-StD
+StDS (**St**anley-**D**anny **S**hell)
 ---
 
 A modern shell built by modern people, featuring most of the commands that you will ever need.
@@ -55,7 +55,7 @@ For automated testing:
 
 Explanation of each file and function can be found [here](https://github.com/mks65-dw/shell/blob/master/8/danny_stanley/DESIGN.md).
 
-## TODO: (We didn't have enough time to implement these ☹)
+## TODO: (We didn't have enough time to implement these :()
 
 - Clear input buffer when handling SIGINT
 - Wildcard handling: `*`
